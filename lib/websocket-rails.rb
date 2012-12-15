@@ -82,6 +82,10 @@ module WebsocketRails
   end
 end
 
+# only load websocket-rails on production or if started with thin
+# this hack allows us to continue to use pow for most development
+if  Rails.env == "production" || $0.end_with?('thin') 
+puts "loading websocket-rails"
 require 'websocket_rails/engine'
 require 'websocket_rails/logging'
 require 'websocket_rails/synchronization'
@@ -98,6 +102,9 @@ require 'websocket_rails/internal_events'
 require 'websocket_rails/connection_adapters'
 require 'websocket_rails/connection_adapters/http'
 require 'websocket_rails/connection_adapters/web_socket'
+else
+puts "NOT loading websocket-rails"
+end
 
 # Exceptions
 class InvalidConnectionError < StandardError
